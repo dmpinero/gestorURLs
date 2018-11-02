@@ -7,40 +7,21 @@ use App\URL;
 class UrlsTableSeeder extends Seeder
 {
     /**
-     * Run the database seeds.
-     *
-     * @return void
+     * Run the database seeds
      */
     public function run()
     {
         Excel::load('public/excel/urls.xlsx', function($reader) {
             $fila = 0;
-            //$image_directory = "public/url_images/";
-
-            //echo "borrando $image_directory";
-            //Storage::deleteDirectory($image_directory);
-            //echo "borrado directorio";
-
-            // Borrar imágenes ya almacenadas
-            //Storage::delete(Storage::allFiles($image_directory));
 
             foreach ($reader->get() as $site) {
                 $fila++;
 
-                // Guardar captura de imagen de la URL
-                $nombre_imagen = "$fila _" . date('YmdHis') . ".jpg";
-                $nombre_imagen = $site->name ? $site->name != "" : date('YmdHis');
-                echo "\nGenerando imagen $fila para $site->url";
-                /*Browsershot::url($site->url)
-                    ->windowSize(1920, 1080)
-                    ->fit(Manipulations::FIT_CONTAIN, 1920, 1080)
-                    ->save($image_directory . $nombre_imagen);
-                */
+                // Obtener información de la url para insertarla en la tabla intermedia
                 $url = URL::create([
                     'name' => $site->name,
                     'url' => $site->url,
-                    'description' => $site->description,
-                    //'image_name' => $nombre_imagen,
+                    'description' => $site->description
                     ]);
 
                 // Crear una categoría por cada elemento (La , es el token de separación)
